@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\PermissionsController;
-
+use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UsersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,4 +35,16 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::post('permissions/assign', [PermissionsController::class, 'assign']);
     Route::post('permissions/design', [PermissionsController::class, 'design']);
 
+    Route::get('roles', [RolesController::class, 'index']);
+    Route::get('roles/{id}', [RolesController::class, 'edit']);
+    Route::post('roles', [RolesController::class, 'store']);
+    Route::put('roles/{id}', [RolesController::class, 'update']);
+    Route::delete('roles/{id}', [RolesController::class, 'delete']);
+
+    Route::get('users', [UsersController::class, 'index']);
+    Route::get('users/{id}', [UsersController::class, 'edit']);
+    Route::post('users', [UsersController::class, 'store']);
+    Route::put('users/{id}', [UsersController::class, 'update']);
+    Route::delete('users/{id}', [UsersController::class, 'delete']);
+    Route::patch('users/reset/password', [UsersController::class, 'resetPassword']);
 });

@@ -17,23 +17,12 @@ return new class extends Migration
             $table->string('lastname1');
             $table->string('lastname2')->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('access')->default(true);
+            $table->string('role', 100);
+            $table->boolean('change_password')->default(true);
+            $table->boolean('active')->default(true);            
             $table->rememberToken();
             $table->timestamps();
-        });
-
-        Schema::create('users_details', function(Blueprint $table){
-            $table->id();
-            $table->bigInteger('user_id')->unsigned()->index();
-            $table->string('status', 100);
-            $table->string('rol', 100);
-            $table->boolean('is_driver');
-            $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
@@ -42,7 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_details');
         Schema::dropIfExists('users');
     }
 };

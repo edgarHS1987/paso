@@ -36,15 +36,21 @@ class AuthController extends Controller
         $token->save();
 
         //obtain user permissions
+        $permissions = array();
+        
+        foreach($user->permissions as $p){            
+            array_push($permissions, $p->name);
+        };
 
         return response()->json([
             'access_token'  => $tokenResult->accessToken,
             'user'  => [
                 'id'    => $user->id,
                 'name'  => $user->names.' '.$user->lastname1.' '.(is_null($user->lastname2) ? '' : $user->lastname2),
-                'access' => $user->access
+                'change' => $user->change_password
             ],
             //permissions object
+            'permissions' => $permissions,
             'expires_at'    => Carbon::parse($token->expires_at)->toDateString()
         ]);
     }

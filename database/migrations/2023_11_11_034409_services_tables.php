@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('services', function(Blueprint $table){
             $table->id();
             $table->bigInteger('warehouse_id')->unsigned()->index();
-            $table->string('external_id')->unique(); //package/service identificator
             $table->date('date');
             $table->time('time');
+            $table->string('guide_number')->unique();
+            $table->string('route_number');
             $table->string('status', 100);
             $table->string('contact_name', 100);
             $table->string('address', 200);

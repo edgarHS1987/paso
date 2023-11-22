@@ -11,19 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('zip_codes', function(Blueprint $table){
-            $table->id();
-            $table->string('zip_code', 10);
-            $table->string('colony', 100);
-            $table->timestamps();
-        });
-
         Schema::create('zones', function(Blueprint $table){
             $table->id();
-            $table->date('date');
-            $table->string('start_zip_code', 10);
-            $table->string('end_zip_code', 10);
+            $table->bigInteger('zip_codes_id')->unsigned()->index();
+            $table->string('name', 100);
             $table->timestamps();
+
+            $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
         });
 
         Schema::create('zones_drivers', function(Blueprint $table){
@@ -42,6 +36,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('zones_drivers');
         Schema::dropIfExists('zones');
-        Schema::dropIfExists('zip_codes');
+        
     }
 };
