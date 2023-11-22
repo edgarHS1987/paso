@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\DriversController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,6 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('permissions/assigned/{id}', [PermissionsController::class, 'permissionsAssignedToRole']);
     Route::post('permissions/assign', [PermissionsController::class, 'assign']);
     Route::post('permissions/design', [PermissionsController::class, 'design']);
+    Route::post('drivers/create', [DriversController::class, 'store']);
 
 });
