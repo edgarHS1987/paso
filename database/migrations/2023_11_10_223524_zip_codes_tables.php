@@ -26,25 +26,44 @@ return new class extends Migration
             $table->foreign('states_id')->references('id')->on('states');
         });
 
-        Schema::create('zip_codes', function(Blueprint $table){
+        Schema::create('cities', function(Blueprint $table){
             $table->id();
             $table->bigInteger('municipalities_id')->unsigned()->index();
+            $table->string('name', 150);
+            $table->timestamps();
+
+            $table->foreign('municipalities_id')->references('id')->on('municipalities');
+        });
+
+        Schema::create('zones', function(Blueprint $table){
+            $table->id();
+            $table->bigInteger('municipalities_id')->unsigned()->index();
+            $table->string('name', 150);
+            $table->timestamps();
+
+            $table->foreign('municipalities_id')->references('id')->on('municipalities');
+        });
+
+        Schema::create('zip_codes', function(Blueprint $table){
+            $table->id();
+            $table->bigInteger('zones_id')->unsigned()->index();
             $table->string('zip_code', 10);
             $table->string('latitude', 50);
             $table->string('longitude', 50);
             $table->timestamps();
 
-            $table->foreign('municipalities_id')->references('id')->on('municipalities');
+            $table->foreign('zones_id')->references('id')->on('zones');
         });
 
         Schema::create('colonies', function(Blueprint $table){
             $table->id();
             $table->bigInteger('zip_codes_id')->unsigned()->index();
             $table->string('name', 150);
+            $table->string('type', 100);
+            $table->string('type_zone', 100);
             $table->timestamps();
 
             $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
-
         });
     }
 
@@ -55,6 +74,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('colinies');
         Schema::dropIfExists('zip_codes');
+        Schema::dropIfExists('zones');
+        Schema::dropIfExists('cities');
         Schema::dropIfExists('municipalities');
         Schema::dropIfExists('states');
     }
