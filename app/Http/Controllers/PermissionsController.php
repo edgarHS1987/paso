@@ -57,10 +57,12 @@ class PermissionsController extends Controller
     }
 
     public function assign(Request $request){
+        
         $rol_id         = $request->rol_id;
         $permission     = $request->permission_name;
 
         $rol = Role::find($rol_id);
+        
         $user = User::where('role', $rol->name)->get();
 
         foreach($user as $u){

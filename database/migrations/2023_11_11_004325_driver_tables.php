@@ -13,23 +13,18 @@ return new class extends Migration
     {
         Schema::create('drivers', function(Blueprint $table){
             $table->id();
+            $table->bigInteger('users_id')->unsigned()->index();
             $table->string('names', 100);
             $table->string('lastname1', 100);
             $table->string('lastname2', 100)->nullable();
-            $table->string('phone', 20);
             $table->string('status', 100);
             $table->string('photo', 100)->nullable();
             $table->string('rfc', 50)->nullable();
             $table->timestamps();
-        });
-
-        Schema::create('users_drivers', function(Blueprint $table){
-            $table->bigInteger('users_id')->unsigned()->index();
-            $table->bigInteger('drivers_id')->unsigned()->index();
-
+            
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');
         });
+
 
         Schema::create('drivers_schedule', function(Blueprint $table){
             $table->id();
@@ -54,7 +49,7 @@ return new class extends Migration
         Schema::create('drivers_document_image', function(Blueprint $table){
             $table->id();
             $table->bigInteger('drivers_document_id')->unsigned()->index();
-            $table->string('url');
+            $table->string('name');
             $table->timestamps();
 
             $table->foreign('drivers_document_id')->references('id')->on('drivers_document')->onDelete('cascade');
@@ -79,10 +74,11 @@ return new class extends Migration
             $table->string('colony', 100);
             $table->string('state', 100);
             $table->string('municipality');
-            $table->string('zip_code', 10);
+            $table->bigInteger('zip_codes_id')->unsigned()->index();
             $table->timestamps();
 
             $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');
+            $table->foreign('zip_codes_id')->references('id')->on('zip_codes')->onDelete('cascade');
         });
 
         Schema::create('drivers_vehicle', function(Blueprint $table){
@@ -124,7 +120,6 @@ return new class extends Migration
         Schedule::dropIfExists('drivers_document_image');
         Schedule::dropIfExists('drivers_document');
         Schedule::dropIfExists('drivers_schedule');
-        Schedule::dropIfExists('users_drivers');
         Schedule::dropIfExists('drivers');
     }
 };
