@@ -10,15 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('zones', function(Blueprint $table){
-            $table->id();
-            $table->bigInteger('zip_codes_id')->unsigned()->index();
-            $table->string('name', 100);
-            $table->timestamps();
-
-            $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
-        });
+    {        
 
         Schema::create('zones_drivers', function(Blueprint $table){
             $table->bigInteger('zones_id')->unsigned()->index();
@@ -34,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('zones_drivers');
-        Schema::dropIfExists('zones');
-        
+        Schema::dropIfExists('zones_drivers');        
     }
 };
