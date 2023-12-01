@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('zones_drivers', function(Blueprint $table){
             $table->bigInteger('zones_id')->unsigned()->index();
             $table->bigInteger('drivers_id')->unsigned()->index();
+            $table->date('date');
 
             $table->foreign('zones_id')->references('id')->on('zones')->onDelete('cascade');
             $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');

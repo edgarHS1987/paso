@@ -9,6 +9,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
+
+use App\Http\Controllers\StatesController;
+use App\Http\Controllers\MunicipalitiesController;
+use App\Http\Controllers\ZonesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -47,4 +51,14 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::put('users/{id}', [UsersController::class, 'update']);
     Route::delete('users/{id}', [UsersController::class, 'delete']);
     Route::patch('users/reset/password', [UsersController::class, 'resetPassword']);
+    
+    Route::get('states', [StatesController::class, 'index']);
+    Route::post('states', [StatesController::class, 'store']);
+    Route::post('states/verify', [StatesController::class, 'verify']);
+    Route::get('states/list', [StatesController::class, 'states']);
+    
+    Route::put('municipalities', [MunicipalitiesController::class, 'update']);
+    Route::get('municipalities/list/{id}', [MunicipalitiesController::class, 'municipalities']);
+    Route::post('municipality/verify', [MunicipalitiesController::class, 'verify']);
+    Route::get('municipalities/show/{id}', [MunicipalitiesController::class, 'show']);
 });

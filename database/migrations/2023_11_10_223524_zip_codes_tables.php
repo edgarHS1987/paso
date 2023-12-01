@@ -21,6 +21,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('states_id')->unsigned()->index();
             $table->string('name', 150);
+            $table->boolean('hasLocation')->default(false);
             $table->timestamps();
 
             $table->foreign('states_id')->references('id')->on('states');
@@ -37,22 +38,21 @@ return new class extends Migration
 
         Schema::create('zones', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('municipalities_id')->unsigned()->index();
             $table->string('name', 150);
-            $table->timestamps();
-
-            $table->foreign('municipalities_id')->references('id')->on('municipalities');
+            $table->timestamps();            
         });
 
         Schema::create('zip_codes', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('zones_id')->unsigned()->index();
+            $table->bigInteger('municipalities_id')->unsigned()->index();
+            $table->bigInteger('zones_id')->nullable()->index();
             $table->string('zip_code', 10);
-            $table->string('latitude', 50);
-            $table->string('longitude', 50);
+            $table->string('latitude', 50)->default('');
+            $table->string('longitude', 50)->default('');
+            $table->string('bbox', 100)->default('');
             $table->timestamps();
 
-            $table->foreign('zones_id')->references('id')->on('zones');
+            $table->foreign('municipalities_id')->references('id')->on('municipalities');
         });
 
         Schema::create('colonies', function(Blueprint $table){
@@ -60,7 +60,6 @@ return new class extends Migration
             $table->bigInteger('zip_codes_id')->unsigned()->index();
             $table->string('name', 150);
             $table->string('type', 100);
-            $table->string('type_zone', 100);
             $table->timestamps();
 
             $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
