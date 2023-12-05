@@ -29,7 +29,7 @@ class MunicipalitiesController extends Controller
       * Obtiene listado de municipios
       */
     public function show($id){
-        $municipalities = Municipalities::select('id', 'name')->where('states_id', $id)->orderBy('name', 'ASC')->get();
+        $municipalities = Municipalities::select('id', 'name', 'hasLocation')->where('states_id', $id)->orderBy('name', 'ASC')->get();
 
         foreach($municipalities as $municipality){
             $municipality['zip_codes'] = ZipCodes::join('colonies', 'colonies.zip_codes_id', 'zip_codes.id')
