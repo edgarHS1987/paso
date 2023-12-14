@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('services', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('warehouse_id')->unsigned()->index();
+            $table->bigInteger('warehouses_id')->unsigned()->index();
+            $table->bigInteger('clients_id')->unsigned()->index();
             $table->bigInteger('zip_codes_id')->unsigned()->index();
             $table->date('date');
             $table->time('time');
@@ -30,7 +31,8 @@ return new class extends Migration
             $table->boolean('assigned')->default(false);
             $table->timestamps();
 
-            $table->foreign('warehouse_id')->references('id')->on('warehouse');
+            $table->foreign('warehouses_id')->references('id')->on('warehouses');
+            $table->foreign('clients_id')->references('id')->on('clients');
             $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
         });
 

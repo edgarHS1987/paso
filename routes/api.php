@@ -10,6 +10,8 @@ use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
 
+use App\Http\Controllers\ClientsController;
+
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\MunicipalitiesController;
 use App\Http\Controllers\ZonesController;
@@ -33,7 +35,7 @@ Route::group(['prefix'=>'auth'], function(){
     });
 });
 
-Route::group(['middleware'=>'auth:api'], function(){
+//Route::group(['middleware'=>'auth:api'], function(){
     Route::get('permissions', [PermissionsController::class, 'index']);
     Route::get('permissions/assigned/{id}', [PermissionsController::class, 'permissionsAssignedToRole']);
     Route::post('permissions/assign', [PermissionsController::class, 'assign']);
@@ -61,4 +63,6 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('municipalities/list/{id}', [MunicipalitiesController::class, 'municipalities']);
     Route::post('municipality/verify', [MunicipalitiesController::class, 'verify']);
     Route::get('municipalities/show/{id}', [MunicipalitiesController::class, 'show']);
-});
+
+    Route::get('clients', [ClientsController::class, 'index']);
+//});
