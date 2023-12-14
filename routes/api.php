@@ -35,7 +35,7 @@ Route::group(['prefix'=>'auth'], function(){
     });
 });
 
-//Route::group(['middleware'=>'auth:api'], function(){
+Route::group(['middleware'=>'auth:api'], function(){
     Route::get('permissions', [PermissionsController::class, 'index']);
     Route::get('permissions/assigned/{id}', [PermissionsController::class, 'permissionsAssignedToRole']);
     Route::post('permissions/assign', [PermissionsController::class, 'assign']);
@@ -65,4 +65,4 @@ Route::group(['prefix'=>'auth'], function(){
     Route::get('municipalities/show/{id}', [MunicipalitiesController::class, 'show']);
 
     Route::get('clients', [ClientsController::class, 'index']);
-//});
+});
