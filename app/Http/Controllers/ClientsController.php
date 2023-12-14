@@ -20,9 +20,13 @@ class ClientsController extends Controller
         foreach($clients as $client){
             
             $path = 'clients/'.$client->id.'/estafeta.png';
-            $image_content = Storage::disk('public')->get($path);
+            $image = '';
+
+            if(file_exists($path)){
+                $image_content = Storage::disk('public')->get($path);
             
-            $image = 'data:image/png;base64,'.base64_encode($image_content);
+                $image = 'data:image/png;base64,'.base64_encode($image_content);
+            }
 
             $items[] = array(
                 'id'=>$client->id, 
