@@ -65,4 +65,9 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('municipalities/show/{id}', [MunicipalitiesController::class, 'show']);
 
     Route::get('clients', [ClientsController::class, 'index']);
+    Route::get('clients/list', [ClientsController::class, 'list']);
+
+    Route::get('zones/byClient/{id}', [ZonesController::class, 'byClient']);
+    Route::post('zones/verify', [ZonesController::class, 'verifyIfExist']);
+    Route::post('zones/configuring', [ZonesController::class, 'configuring']);
 });

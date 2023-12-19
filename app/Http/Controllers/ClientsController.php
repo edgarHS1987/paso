@@ -18,13 +18,14 @@ class ClientsController extends Controller
 
         $items = array();
         foreach($clients as $client){
-            
-            $path = 'clients/'.$client->id.'/estafeta.png';
+            $storage = storage_path('app/public');
+            $name = explode('.', $client->logo);
+            $img_path = 'clients/'.$client->id.'/'.$name[0].'.png';
             $image = '';
 
-            if(file_exists($path)){
-                $image_content = Storage::disk('public')->get($path);
-            
+            if(file_exists($storage.'/'.$img_path)){
+                $image_content = Storage::disk('public')->get($img_path);    
+                
                 $image = 'data:image/png;base64,'.base64_encode($image_content);
             }
 
@@ -36,5 +37,11 @@ class ClientsController extends Controller
         }
         
         return response()->json($items);
+    }
+
+    public function list(){
+        $clients = Clients::select('id as value', 'name as label')->get();
+
+        return response()->json($clients);
     }
 }

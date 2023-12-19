@@ -36,16 +36,9 @@ return new class extends Migration
             $table->foreign('municipalities_id')->references('id')->on('municipalities');
         });
 
-        Schema::create('zones', function(Blueprint $table){
-            $table->id();
-            $table->string('name', 150);
-            $table->timestamps();            
-        });
-
         Schema::create('zip_codes', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('municipalities_id')->unsigned()->index();
-            $table->bigInteger('zones_id')->nullable()->index();
+            $table->bigInteger('municipalities_id')->unsigned()->index();            
             $table->string('zip_code', 10);
             $table->string('latitude', 50)->default('');
             $table->string('longitude', 50)->default('');

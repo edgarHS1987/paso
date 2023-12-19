@@ -13,11 +13,8 @@ return new class extends Migration
     {
         Schema::create('warehouses', function(Blueprint $table){
             $table->id();
-            $table->bigInteger('zip_codes_id')->unsigned()->index();
             $table->string('name', 100);            
-            $table->timestamps();
-
-            $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
+            $table->timestamps();            
         });
     }
 

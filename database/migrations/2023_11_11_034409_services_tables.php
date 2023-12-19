@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('warehouses_id')->unsigned()->index();
             $table->bigInteger('clients_id')->unsigned()->index();
-            $table->bigInteger('zip_codes_id')->unsigned()->index();
             $table->date('date');
             $table->time('time');
             $table->string('guide_number')->unique();
@@ -33,7 +32,6 @@ return new class extends Migration
 
             $table->foreign('warehouses_id')->references('id')->on('warehouses');
             $table->foreign('clients_id')->references('id')->on('clients');
-            $table->foreign('zip_codes_id')->references('id')->on('zip_codes');
         });
 
         Schema::create('services_drivers', function(Blueprint $table){

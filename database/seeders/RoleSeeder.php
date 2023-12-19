@@ -17,15 +17,22 @@ class RoleSeeder extends Seeder
     {
         \DB::table('roles')->delete();
         $role = Role::create([
-           'name'          => 'administrador_de_sistema',
+            'name'          => 'administrador_de_sistema',
             'display_name'	=>	'Administrador de sistema',             
-           'description'   =>  'Permite utilizar y administrar todos los modulos del sistema',
-           'guard_name'    => 'api'
+            'description'   =>  'Permite utilizar y administrar todos los modulos del sistema',
+            'guard_name'    => 'api'
         ]);
 
         $permisos = Permission::all();
         foreach ($permisos as $permiso) {
            $role->givePermissionTo($permiso);
         }
+
+        $role = Role::create([
+            'name'          =>  'driver',
+            'display_name'	=>	'Conductor',
+            'description'   =>  'Permite a un conductor utilizar los modulos de la aplicacion', //verificar si puede ingresar al sistema para que pueda agregar sus datos
+            'guard_name'    =>  'api'
+         ]);
     }
 }

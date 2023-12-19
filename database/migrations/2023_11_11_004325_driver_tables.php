@@ -25,7 +25,6 @@ return new class extends Migration
             $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-
         Schema::create('drivers_schedule', function(Blueprint $table){
             $table->id();
             $table->bigInteger('drivers_id')->unsigned()->index();
@@ -74,11 +73,11 @@ return new class extends Migration
             $table->string('colony', 100);
             $table->string('state', 100);
             $table->string('municipality');
-            $table->bigInteger('zip_codes_id')->unsigned()->index();
+            $table->string('zip_code', 10);
+            $table->boolean('isFiscal')->default(true);
             $table->timestamps();
 
             $table->foreign('drivers_id')->references('id')->on('drivers')->onDelete('cascade');
-            $table->foreign('zip_codes_id')->references('id')->on('zip_codes')->onDelete('cascade');
         });
 
         Schema::create('drivers_vehicle', function(Blueprint $table){
