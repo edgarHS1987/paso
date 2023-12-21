@@ -6,6 +6,7 @@ use App\Models\DriverAddress;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
 use Exception;
 
 class DriversAddressController extends Controller
@@ -23,6 +24,9 @@ class DriversAddressController extends Controller
      */
     public function store(Request $request)
     {   
+        $AddressObj = new DriversAddressController();
+        $Driver = new DriversController();
+
         try {
             $request->validate([
                 'drivers_id' => 'required',
@@ -31,8 +35,20 @@ class DriversAddressController extends Controller
                 'colony' => 'required',
                 'state' => 'required',
                 'municipality' => 'required',
-                'zip_codes_id' => 'required'
+                'zip_code' => 'required'
             ]);
+
+
+            $addressExistente = DriverAddress::where('drivers_id', $request->drivers_id)->first();
+            //si ya existe el direccion del driver, actualizar datos
+            if ($addressExistente) {
+                $updateRes = $AddressObj->update($addressExistente->id,$request);
+                $Driver->updateRFCDriver($request->drivers_id,$request->RFC);
+
+                //$updateRes = $Driver->update($request, $request->idDriver);
+                return $updateRes;
+            }
+
 
             $newAddress = DriverAddress::create($request->all());
 
@@ -40,11 +56,10 @@ class DriversAddressController extends Controller
             $datos = [
                 'message' => 'Driver Address Agregada',
                 'statusCode' => $statusCode,
-                'data' => $newDriver
+                'data' => $newAddress
             ];
 
-            $Driver = new DriversController();
-            $Driver->updateRFCDriver($request->drivers_id,$reques->rfc);
+            $Driver->updateRFCDriver($request->drivers_id,$request->RFC);
 
             return response()->json([$datos]);
 
@@ -63,11 +78,43 @@ class DriversAddressController extends Controller
     }
 
 
+    public function subir(Request $request){
+
+        try{
+            \DB::beginTransaction();
+            // Get the file from the request
+            $file = $request->file('file');
+
+            $nameFile = $file->getClientOriginalName();
+
+            $file->storeAs('drivers-doc', $nameFile ,'local');
+            return response()->json([
+                'ok' => true,
+                'mensaje' => 'Archivo subido correctamente'
+            ]);
+            
+        }catch(\Exception $e){
+            \DB::rollback();
+            return response()->json([
+                'ok' => false,
+                'mensaje' => $e.getMessage()
+            ]);
+        }
+        
+
+        
+    }
+
+
     public function edit($id){
-        $driver = Driver::join('users', 'users.id', 'drivers.users_id')
+        $driver = Driver::join('drivers_address', 'drivers.id', 'drivers_address.drivers_id')
                     ->where('drivers.id', $id)
-                    ->select('drivers.id', 'drivers.names', 'drivers.lastname1','drivers.lastname2',
-                                'drivers.status','users.email')->first();
+                    ->select('drivers.rfc', 'drivers_address.id','drivers_address.street',
+                                'drivers_address.int_number','drivers_address.colony',
+                                'drivers_address.state','drivers_address.municipality',
+                                'drivers_address.zip_code','drivers_address.isFiscal',
+                                'drivers_address.ext_number')->first();
+
         return response()->json($driver);
     }
 
@@ -83,20 +130,20 @@ class DriversAddressController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update( string $id, Request $request )
     {
         try{
             \DB::beginTransaction();
 
 
-            $driver = Driver::where('id', $id)->first();
-            $driver->fill($request->all());
-            $driver->save();
+            $address = DriverAddress::where('id', $id)->first();
+            $address->fill($request->all());
+            $address->save();
             \DB::commit();
             
             return response()->json([
                 'ok' => true,
-                'mensaje' => 'El driver '.$driver->names.' se actualizo correctamente.'
+                'mensaje' => 'Datos fiscales actualizados correctamente.'
             ]);
             
         }catch(\Exception $e){

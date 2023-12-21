@@ -17,6 +17,7 @@ class DriverAddress extends Model
         'colony',
         'state',
         'municipality',
-        'zip_codes_id'
+        'zip_code',
+        'isFiscal',
     ];
 }

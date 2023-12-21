@@ -195,9 +195,9 @@ class DriversController extends Controller
     /**
      * Update RFC Driver
      */
-    public function updateRFCDriver(string $id,string $rfc)
+    public function updateRFCDriver(string $id,string $RFC)
     {
-        Driver::where('id', $id)->update(['rfc' => '$rfc']);
+        Driver::where('id', $id)->update(['rfc' => $RFC]);
     }
 
 
