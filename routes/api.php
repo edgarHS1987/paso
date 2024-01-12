@@ -15,6 +15,8 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\StatesController;
 use App\Http\Controllers\MunicipalitiesController;
 use App\Http\Controllers\ZonesController;
+use App\Http\Controllers\WarehousesController;
+use App\Http\Controllers\ServicesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -70,4 +72,10 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('zones/byClient/{id}', [ZonesController::class, 'byClient']);
     Route::post('zones/verify', [ZonesController::class, 'verifyIfExist']);
     Route::post('zones/configuring', [ZonesController::class, 'configuring']);
+
+    Route::get('warehouses/show/{id}', [WarehousesController::class, 'show']);
+
+    Route::post('services/list', [ServicesController::class, 'list']);
+    Route::post('services', [ServicesController::class, 'store']);
+    Route::delete('services/{id}', [ServicesController::class, 'delete']);
 });

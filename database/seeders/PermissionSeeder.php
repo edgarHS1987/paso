@@ -97,6 +97,12 @@ class PermissionSeeder extends Seeder
             'description'   => 'Permite asignar un rol a un usuario desde el formulario.',
             'guard_name'	=> 'api'
         ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'admin_users_assign_client',
+            'display_name'  => 'Asignar cliente a un usuario',
+            'description'   => 'Permite asignar uno o varios clientes a un usuario para poder realizar el registro de los servicios del cliente.',
+            'guard_name'	=> 'api'
+        ]);
 
         /** Driver */
         \DB::table('permissions')->insert([
@@ -150,6 +156,32 @@ class PermissionSeeder extends Seeder
             'guard_name'	=> 'api'
         ]);
 
+         /** Clientes */
+         \DB::table('permissions')->insert([
+            'name'          => 'clients',
+            'display_name'  => 'Listado clientes',
+            'description'   => 'Permite ver el listado de clientes que se encuentran en el sistema.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'clients_create',
+            'display_name'  => 'Registro de cliente',
+            'description'   => 'Permite registrar un nuevo cliente en el sistema.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'clients_update',
+            'display_name'  => 'Edición de cliente',
+            'description'   => 'Permite actualizar un cliente en el sistema.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'clients_delete',
+            'display_name'  => 'Eliminar cliente',
+            'description'   => 'Permite eliminar un cliente en el sistema.',
+            'guard_name'	=> 'api'
+        ]);
+
         /** Servicios */
         /** Estados */
         \DB::table('permissions')->insert([
@@ -194,6 +226,38 @@ class PermissionSeeder extends Seeder
             'name'          => 'services_delete',
             'display_name'  => 'Eliminar servicio',
             'description'   => 'Permite eliminar un servicio en el sistema.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'services_select_client',
+            'display_name'  => 'Seleccion cliente - Registro servicio',
+            'description'   => 'Permite seleccionar un cliente en el registro de servicio.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'services_assign_drivers',
+            'display_name'  => 'Asignar a conductores',
+            'description'   => 'Permite asignar servicios registrados a conductores.',
+            'guard_name'	=> 'api'
+        ]);
+
+         /** Zonas */
+         \DB::table('permissions')->insert([
+            'name'          => 'services_zones',
+            'display_name'  => 'Listado zonas',
+            'description'   => 'Permite ver el listado de zonas que se encuentran en el sistema.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'services_zones_configure',
+            'display_name'  => 'Configurar zonas',
+            'description'   => 'Permite realizar la configuración de zonas.',
+            'guard_name'	=> 'api'
+        ]);
+        \DB::table('permissions')->insert([
+            'name'          => 'services_zones_delete',
+            'display_name'  => 'Eliminar zonas',
+            'description'   => 'Permite las zonas de un cliente.',
             'guard_name'	=> 'api'
         ]);
 
