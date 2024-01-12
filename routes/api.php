@@ -15,6 +15,14 @@ use App\Http\Controllers\DriversVehiclesController;
 
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
+
+use App\Http\Controllers\ClientsController;
+
+use App\Http\Controllers\StatesController;
+use App\Http\Controllers\MunicipalitiesController;
+use App\Http\Controllers\ZonesController;
+use App\Http\Controllers\WarehousesController;
+use App\Http\Controllers\ServicesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -78,4 +86,27 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::put('users/{id}', [UsersController::class, 'update']);
     Route::delete('users/{id}', [UsersController::class, 'delete']);
     Route::patch('users/reset/password', [UsersController::class, 'resetPassword']);
+    
+    Route::get('states', [StatesController::class, 'index']);
+    Route::post('states', [StatesController::class, 'store']);
+    Route::post('states/verify', [StatesController::class, 'verify']);
+    Route::get('states/list', [StatesController::class, 'states']);
+    
+    Route::put('municipalities', [MunicipalitiesController::class, 'update']);
+    Route::get('municipalities/list/{id}', [MunicipalitiesController::class, 'municipalities']);
+    Route::post('municipality/verify', [MunicipalitiesController::class, 'verify']);
+    Route::get('municipalities/show/{id}', [MunicipalitiesController::class, 'show']);
+
+    Route::get('clients', [ClientsController::class, 'index']);
+    Route::get('clients/list', [ClientsController::class, 'list']);
+
+    Route::get('zones/byClient/{id}', [ZonesController::class, 'byClient']);
+    Route::post('zones/verify', [ZonesController::class, 'verifyIfExist']);
+    Route::post('zones/configuring', [ZonesController::class, 'configuring']);
+
+    Route::get('warehouses/show/{id}', [WarehousesController::class, 'show']);
+
+    Route::post('services/list', [ServicesController::class, 'list']);
+    Route::post('services', [ServicesController::class, 'store']);
+    Route::delete('services/{id}', [ServicesController::class, 'delete']);
 });

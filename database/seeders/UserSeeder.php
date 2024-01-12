@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             'role'=>'administrador_de_sistema',
             'password'=>bcrypt('s0p0rt3'),
             'change_password'=>true
-        ]);       
+        ]);
 
         $permisos = Permission::all();
         foreach ($permisos as $permiso) {
