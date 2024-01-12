@@ -19,7 +19,6 @@ class DriversDocumentsImagesController extends Controller
 
         // Get all files in the specified directory
         $files = Storage::files( $path );
-
         // Loop through each file and read its content
         foreach ($files as $file) {
             // Get the file content
@@ -48,6 +47,15 @@ class DriversDocumentsImagesController extends Controller
             Storage::delete( $file );
 
         }
+
+        $statusCode = 201;
+            $datos = [
+                'message' => 'completed',
+                'statusCode' => $statusCode,
+                'error' => false
+            ];
+
+        return response()->json([$datos]);
     }
 
     /**
@@ -57,6 +65,67 @@ class DriversDocumentsImagesController extends Controller
 
        
         
+    }
+
+    //get list of documents for visor 
+    public function listDocsVisor( string $tipo,string $idDriver ){
+        try{
+
+            if ( $tipo == 'Identificacion Oficial' ) {
+                $tipo = 'INE';    
+            }elseif (  $tipo == 'Licencia Conducir' ) {
+                $tipo = 'Licencia';
+            }elseif (  $tipo == 'Comprobante Domicilio' ) {
+                $tipo = 'Comprobante';
+            }elseif (  $tipo == 'Constancia Situacion Fiscal' ) {
+                $tipo = 'SAT';
+            }elseif (  $tipo == 'Fotos del Auto' ) {
+                $tipo = 'fotosAuto';
+            }elseif (  $tipo == 'Seguro Auto' ) {
+                $tipo = 'SeguroAuto';
+            }
+
+            // $resultado = DriverDocument::join('drivers_document_image', 'drivers_document.id', '=', 'drivers_document_image.drivers_document_id')
+            //             ->where('drivers_document.drivers_id', $idDriver)
+            //             ->where('drivers_document.type', $tipo)
+            //             ->select('name as path_complete', \DB::raw("SUBSTRING_INDEX(name, '/', -1) AS name_file"))
+            //             ->get();
+            
+            // Get all files in the specified directory
+            $path = 'drivers-doc\driver_'. $idDriver . '\\' . $tipo  ;
+            $files = Storage::files( $path );
+
+            $allFiles = [];
+            // Loop through each file and read its content
+            foreach ($files as $file) {
+                $data['name_file'] = pathinfo($file,PATHINFO_BASENAME);
+                array_push( $allFiles,$data );
+            }
+
+            //return $allFiles;
+
+            $statusCode = 201;
+                $datos = [
+                    'message' => 'ok',
+                    'statusCode' => $statusCode,
+                    'error' => false,
+                    'data' => $allFiles,
+                ];
+            
+            return response()->json([$datos]);
+        
+
+        } catch (Exception $e) {
+            $statusCode = 500;
+            $datos = [
+                'message' => 'Error ' . $e->getMessage(),
+                'statusCode' => $statusCode,
+                'error' => true,
+            ];
+
+            return response()->json([$datos]);
+        }  
+
     }
 
 
@@ -116,6 +185,10 @@ class DriversDocumentsImagesController extends Controller
             $rutaDriver = 'driver_' .  $id . '/Comprobante/';
         }elseif (  $tipo == 'Constancia Situacion Fiscal' ) {
             $rutaDriver = 'driver_' .  $id . '/SAT/';
+        }elseif (  $tipo == 'Fotos del Auto' ) {
+            $rutaDriver = 'driver_' .  $id . '/fotosAuto/';
+        }elseif (  $tipo == 'Seguro Auto' ) {
+            $rutaDriver = 'driver_' .  $id . '/SeguroAuto/';
         }
         
         $files = Storage::disk('docsDrivers')->files( $rutaDriver );
@@ -143,9 +216,41 @@ class DriversDocumentsImagesController extends Controller
             $rutaDriver = 'driver_' .  $id . '/Comprobante/';
         }elseif (  $tipo == 'Constancia Situacion Fiscal' ) {
             $rutaDriver = 'driver_' .  $id . '/SAT/';
+        }elseif (  $tipo == 'Fotos del Auto' ) {
+            $rutaDriver = 'driver_' .  $id . '/fotosAuto/';
+        }elseif (  $tipo == 'Seguro Auto' ) {
+            $rutaDriver = 'driver_' .  $id . '/SeguroAuto/';
         }
 
         $pathFile = $rutaDriver . $path; 
+        
+        abort_if(   
+            ! Storage::disk('docsDrivers') ->exists($pathFile),
+            404,
+            "The file doesn't exist. Check the path."
+        );
+         return Storage::disk('docsDrivers')->response($pathFile);
+        //return Storage::disk('docsDrivers')->get($pathFile);
+    }
+
+
+    public function getDocumentVisor( string $getFile, string $tipo, string $id ){
+
+        if ( $tipo == 'Identificacion Oficial' ) {
+            $rutaDriver = 'driver_' .  $id . '/INE/';    
+        }elseif (  $tipo == 'Licencia Conducir' ) {
+            $rutaDriver = 'driver_' .  $id . '/Licencia/';
+        }elseif (  $tipo == 'Comprobante Domicilio' ) {
+            $rutaDriver = 'driver_' .  $id . '/Comprobante/';
+        }elseif (  $tipo == 'Constancia Situacion Fiscal' ) {
+            $rutaDriver = 'driver_' .  $id . '/SAT/';
+        }elseif (  $tipo == 'Fotos del Auto' ) {
+            $rutaDriver = 'driver_' .  $id . '/fotosAuto/';
+        }elseif (  $tipo == 'Seguro Auto' ) {
+            $rutaDriver = 'driver_' .  $id . '/SeguroAuto/';
+        }
+
+        $pathFile = $rutaDriver . $getFile; 
         
         abort_if(   
             ! Storage::disk('docsDrivers') ->exists($pathFile),
