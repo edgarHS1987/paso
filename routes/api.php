@@ -12,6 +12,7 @@ use App\Http\Controllers\DriversAddressController;
 use App\Http\Controllers\DriversDocumentsController;
 use App\Http\Controllers\DriversDocumentsImagesController;
 use App\Http\Controllers\DriversVehiclesController;
+use App\Http\Controllers\ReportsController;
 
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
@@ -73,6 +74,9 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('drivers/vehicle/{id}', [DriversVehiclesController::class, 'edit']);
     Route::post('drivers/vehicle/update', [DriversVehiclesController::class, 'update']);
 
+    Route::get('reports/workDays/{fechaIn}/{fechaFn}', [ReportsController::class, 'workDays']);
+    Route::get('reports/servicesAsigned/{fechaIn}/{fechaFn}', [ReportsController::class, 'servicesAsigned']);
+    Route::get('reports/servicesStatus/{fechaIn}/{fechaFn}', [ReportsController::class, 'statusServices']);
 
     Route::get('roles', [RolesController::class, 'index']);
     Route::get('roles/{id}', [RolesController::class, 'edit']);
